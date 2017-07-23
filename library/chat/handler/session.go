@@ -29,6 +29,7 @@ func init()  {
 }
 
 
+//开启会话
 func Session(ws *websocket.Conn)  {
 
 	connection_count+=1
@@ -66,7 +67,7 @@ func Session(ws *websocket.Conn)  {
 
 }
 
-
+//会话变量获取
 func SessionGet(uid int, field string) interface{}  {
 	tmp_key := fmt.Sprintf("%d-%s",uid,field)
 	if _,ok := di[tmp_key]; ok {
@@ -75,11 +76,13 @@ func SessionGet(uid int, field string) interface{}  {
 	return nil
 }
 
+//会话变量修改
 func SessionSet(uid int, field string,value interface{})  {
 	tmp_key := fmt.Sprintf("%d-%s",uid,field)
 	di[tmp_key]=value
 }
 
+//会话销毁
 func SessionDestory(uid int)  {
 
 	for k,_ := range di {
@@ -90,6 +93,7 @@ func SessionDestory(uid int)  {
 	}
 }
 
+//心跳检测
 func Heartbeat(sess Sess_info)  {
 
 	for  {

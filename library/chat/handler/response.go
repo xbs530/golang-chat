@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-
+//监听命令
 func ListenCommand(sess Sess_info)  {
 
 	ws := sess.Ws
@@ -51,6 +51,7 @@ func ListenCommand(sess Sess_info)  {
 
 }
 
+//监听消息
 func ListenMessage(sess Sess_info)  {
 
 	my_msg_chan := SessionGet(sess.Uid,"msg_chan")
@@ -76,6 +77,7 @@ func ListenMessage(sess Sess_info)  {
 
 }
 
+//退出
 func Logout(sess Sess_info , close_conn bool)  {
 	if close_conn {
 		sess.Ws.Close()

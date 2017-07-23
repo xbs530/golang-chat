@@ -10,6 +10,7 @@ type Command struct {
 
 }
 
+//发消息
 func (cmd Command) Send(sess Sess_info, data string)  {
 	msg_info := strings.SplitN(data,":",2)
 	if len(msg_info)!=2 {
