@@ -12,11 +12,16 @@ import (
 //会话结构
 type Sess_info struct {
 	Ws *websocket.Conn
+	users *[]int
 	Uid int
 }
 
 //在线人数
 var connection_count = 0
+
+//在线用户
+var online_users=make([]int,0,100)
+
 //用户编号
 var user_no=0
 
@@ -35,7 +40,9 @@ func Session(ws *websocket.Conn)  {
 	connection_count+=1
 	user_no+=1
 
-	sess := Sess_info{ws,user_no}
+	sess := Sess_info{ws,&online_users,user_no}
+
+	online_users=append(online_users,sess.Uid)
 
 	SessionSet(sess.Uid,"online",1)
 
@@ -85,12 +92,25 @@ func SessionSet(uid int, field string,value interface{})  {
 //会话销毁
 func SessionDestory(uid int)  {
 
-	for k,_ := range di {
+	for k,v := range di {
 		tmp :=strings.SplitN(k,"-",2)
 		if prefix,_ := strconv.Atoi(tmp[0]);prefix==uid {
+			if tmp_ch,ok:=v.(chan string); ok {
+				close(tmp_ch)
+			}
 			delete(di,k)
 		}
 	}
+
+	for k,v := range online_users {
+
+		if v==uid {
+			online_users=append(online_users[:k],online_users[k+1:]...)
+			goto endfor
+		}
+	}
+	endfor:
+
 }
 
 //心跳检测

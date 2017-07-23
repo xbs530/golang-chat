@@ -38,8 +38,10 @@ func ListenCommand(sess Sess_info)  {
 
 		cmd_handler := Command{}
 		switch call_cmd {
-		case "send" : //发消息
+		case "send" : //个人消息
 			go cmd_handler.Send(sess,response)
+		case "broadcast"://广播消息
+			go cmd_handler.Broadcast(sess,response)
 		case "logout"://退出
 			go Logout(sess,true)
 		default:
